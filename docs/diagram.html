@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { 
+            background: #1a1a2e; 
+            margin: 0;
+            padding: 40px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .container { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        h1 { 
+            text-align: center; 
+            color: #333; 
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+        .mermaid {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦞 How Clawdbot Works</h1>
+        <pre class="mermaid">
+flowchart TB
+    subgraph YOUR["💻 YOUR LAPTOP"]
+        USER["You (Browser/Terminal)"]
+    end
+
+    subgraph OPTIONS["🚪 Ways to Connect"]
+        TELEGRAM["📱 Telegram Plugin"]
+        DIRECT["🌐 Direct WebSocket<br/>ws://your-ec2:18789"]
+    end
+
+    subgraph EC2["☁️ AWS EC2 - Clawdbot Gateway (Port 18789)"]
+        GW["🔶 Gateway<br/>Node.js Process"]
+        
+        subgraph INSIDE["Inside Gateway"]
+            ROUTER["📍 Message Router"]
+            
+            subgraph AGENTS["🤖 Agents"]
+                MAIN["Main Agent<br/>(Kimi K2.5)"]
+                CODER["Coding Agent<br/>(Claude)"]
+            end
+            
+            TOOLS["🛠️ Tools<br/>read, write, exec, web_search"]
+            MEMORY["🧠 Memory<br/>SOUL.md, USER.md, etc."]
+        end
+        
+        CONFIG["⚙️ config.json"]
+    end
+
+    subgraph AI["🧠 AI Providers"]
+        VENICE["Venice.ai<br/>(Kimi, Llama)"]
+        ANTHROPIC["Anthropic<br/>(Claude)"]
+    end
+
+    USER --> TELEGRAM
+    USER --> DIRECT
+    TELEGRAM --> GW
+    DIRECT --> GW
+    GW --> ROUTER
+    ROUTER --> MAIN
+    ROUTER --> CODER
+    MAIN --> TOOLS
+    CODER --> TOOLS
+    MAIN --> MEMORY
+    CODER --> MEMORY
+    MAIN --> VENICE
+    CODER --> ANTHROPIC
+    TOOLS --> MEMORY
+    CONFIG --> GW
+
+    style GW fill:#ff9966,stroke:#333,stroke-width:3px
+    style MAIN fill:#99ff99,stroke:#333,stroke-width:2px
+    style CODER fill:#99ccff,stroke:#333,stroke-width:2px
+    style TELEGRAM fill:#6699ff,stroke:#333,stroke-width:2px
+    style DIRECT fill:#ff99cc,stroke:#333,stroke-width:2px
+    style USER fill:#ffff99,stroke:#333,stroke-width:2px
+        </pre>
+    </div>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'base', flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' } });</script>
+</body>
+</html>
